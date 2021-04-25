@@ -95,7 +95,7 @@ legend.onAdd = function () {
         "#800000",
         "#000000"
     ];
-    var labels = [];
+    // var labels = [];
 
     // loop through our grades and generate a label with a colored square for each interval
     // grades.forEach(function(grade, index){
@@ -106,6 +106,7 @@ legend.onAdd = function () {
         div.innerHTML +=
             '<i style="background:' + colors[i] + '"></i> ' +
             grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+        console.log(colors[i])
     }
     return div;  
 };
