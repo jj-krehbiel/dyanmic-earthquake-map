@@ -43,7 +43,7 @@ d3.json(url).then(function (response) {
 
     //         // Add a new marker to the cluster group and bind a pop-up
             markers.addLayer(L.marker([geometry.coordinates[1], geometry.coordinates[0]])
-                .bindPopup(data[i].properties.mag));
+                .bindPopup("A " + data[i].properties.mag + " magnitude earthquake occured " + data[i].properties.place));
         }
 
     }
