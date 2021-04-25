@@ -16,29 +16,21 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     accessToken: API_KEY
 }).addTo(myMap);
 
-// Store API query variables
+// Store API link in variable
 var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
 // Create a variable to use for the color/choropleth scale
 var geojson;
 
-// Assemble API query URL
-// var url = baseURL + date + complaint + limit;
-
 // Create function to grab data from the geojson with d3
 d3.json(url).then(function (response) {
     var data = response.features
-    // console.log(data)
-    // console.log(Math.max(data.geometry.coordinates[2]));
     
-    // Create a new marker cluster group
-    // var markers = L.markerClusterGroup();
     // // Loop through data
     for (var i = 0; i < data.length; i++) {
 
-        //     // Set the data location property to a variable
+        // Set the geometry property to a variable
         var geometry = data[i].geometry;
-        // console.log(geometry)
         
         // Create function to divvy up color groups by depth
         function getColor(d) {
@@ -63,12 +55,9 @@ d3.json(url).then(function (response) {
 
         };
 
-        //     // Check for location property
+        //  Create a circle marker for each geometry data point
         if (geometry) {
 
-            //         // Add a new marker to the cluster group and bind a pop-up
-            //     markers.addLayer(L.marker([geometry.coordinates[1], geometry.coordinates[0]])
-            //         .bindPopup("A " + data[i].properties.mag + " magnitude earthquake occured " + data[i].properties.place));
             var marker = L.circle([geometry.coordinates[1], geometry.coordinates[0]], {
                 color: 'd7301f',
                 fillColor: getColor(geometry.coordinates[2]),
@@ -86,7 +75,9 @@ var legend = L.control({position: 'bottomright'});
 legend.onAdd = function () {
 
     var div = L.DomUtil.create('div', 'info legend');
+    // Store legend values in an array
     var grades = ['-10', '10', '30', '50', '70', '90'];
+    // Store legend colors in an array
     var colors = [
         "#66ff33",
         "#ffff00",
@@ -95,13 +86,9 @@ legend.onAdd = function () {
         "#800000",
         "#000000"
     ];
-    // var labels = [];
+    // Label the legend
     div.innerHTML = "<h3>Depth of Earthquake Source (km)</h3>"
-    // loop through our grades and generate a label with a colored square for each interval
-    // grades.forEach(function(grade, index){
-    //     labels.push("<div class = 'row'><li style=\"background-color: " + colors[index] +  "; width: 10px"+ "; height: 10px" + "\"></li>" + "<li>" + grade + "</li></div>");
-    // })
-    // div.innerHTML += "<ul>" + labels.join("") +"</ul>";
+    // loop through grades and generate a label with a colored square for each interval
     for (var i = 0; i < grades.length; i++) {
         div.innerHTML +=
             '<i style="background:' + colors[i] + '"></i> ' +
@@ -111,25 +98,7 @@ legend.onAdd = function () {
     return div;  
 };
 
+// Add legend to map
 legend.addTo(myMap);
 
-//   // Add min & max
-//   var legendInfo = "<h1>Median Income</h1>" +
-//     "<div class=\"labels\">" +
-//       "<div class=\"min\">" + limits[0] + "</div>" +
-//       "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
-//     "</div>";
-
-//   div.innerHTML = legendInfo;
-
-//   limits.forEach(function(limit, index) {
-//     labels.push("<li style=\"background-color: " + colors[index] + "\"></li>");
-//   });
-
-//   div.innerHTML += "<ul>" + labels.join("") + "</ul>";
-//   return div;
-// };
-
-// // Adding legend to the map
-// legend.addTo(myMap);
 });
