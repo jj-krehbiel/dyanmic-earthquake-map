@@ -30,7 +30,7 @@ d3.json(url).then(function (response) {
     var data = response.features
     console.log(data)
     // Create a new marker cluster group
-    var markers = L.markerClusterGroup();
+    // var markers = L.markerClusterGroup();
     // // Loop through data
     for (var i = 0; i < data.length; i++) {
 
@@ -42,11 +42,18 @@ d3.json(url).then(function (response) {
         if (geometry) {
 
     //         // Add a new marker to the cluster group and bind a pop-up
-            markers.addLayer(L.marker([geometry.coordinates[1], geometry.coordinates[0]])
-                .bindPopup("A " + data[i].properties.mag + " magnitude earthquake occured " + data[i].properties.place));
-        }
+        //     markers.addLayer(L.marker([geometry.coordinates[1], geometry.coordinates[0]])
+        //         .bindPopup("A " + data[i].properties.mag + " magnitude earthquake occured " + data[i].properties.place));
+        var marker = L.circle([geometry.coordinates[1], geometry.coordinates[0]], {
+            color: "green",
+            fillColor: "green",
+            fillOpacity: 0.5,
+            radius: 200
+        }).bindPopup("A " + data[i].properties.mag + " magnitude earthquake occured " + data[i].properties.place);
+        marker.addTo(myMap);
+    }
 
     }
       // Add our marker cluster layer to the map
-  myMap.addLayer(markers);
+//   myMap.addLayer(markers);
 });
