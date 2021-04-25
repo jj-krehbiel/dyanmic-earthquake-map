@@ -77,12 +77,58 @@ d3.json(url).then(function (response) {
                 radius: 15000 * (data[i].properties.mag)
             }).bindPopup("A " + data[i].properties.mag + " magnitude earthquake occured " + data[i].properties.place);
             marker.addTo(myMap);
-
-           
         }
-
     }
-    // console.log(depth)
-    // Add our marker cluster layer to the map
-    //   myMap.addLayer(markers);
+
+// Set up the legend
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function () {
+
+    var div = L.DomUtil.create('div', 'info legend');
+    var grades = ['-10', '10', '30', '50', '70', '90'];
+    var colors = [
+        "#66ff33",
+        "#ffff00",
+        "#ff9900",
+        "#fc8d59",
+        "#800000",
+        "#000000"
+    ];
+    var labels = [];
+
+    // loop through our grades and generate a label with a colored square for each interval
+    // grades.forEach(function(grade, index){
+    //     labels.push("<div class = 'row'><li style=\"background-color: " + colors[index] +  "; width: 10px"+ "; height: 10px" + "\"></li>" + "<li>" + grade + "</li></div>");
+    // })
+    // div.innerHTML += "<ul>" + labels.join("") +"</ul>";
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + colors[i] + '"></i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
+    return div;  
+};
+
+legend.addTo(myMap);
+
+//   // Add min & max
+//   var legendInfo = "<h1>Median Income</h1>" +
+//     "<div class=\"labels\">" +
+//       "<div class=\"min\">" + limits[0] + "</div>" +
+//       "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
+//     "</div>";
+
+//   div.innerHTML = legendInfo;
+
+//   limits.forEach(function(limit, index) {
+//     labels.push("<li style=\"background-color: " + colors[index] + "\"></li>");
+//   });
+
+//   div.innerHTML += "<ul>" + labels.join("") + "</ul>";
+//   return div;
+// };
+
+// // Adding legend to the map
+// legend.addTo(myMap);
 });
