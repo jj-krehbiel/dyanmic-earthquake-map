@@ -15,3 +15,17 @@ var myMap = L.map("mapid", {
     id: "mapbox/streets-v11",
     accessToken: API_KEY
   }).addTo(myMap);
+
+// Store API query variables
+var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
+// var date = "$where=created_date between'2016-01-01T00:00:00' and '2017-01-01T00:00:00'";
+// var complaint = "&complaint_type=Rodent";
+// var limit = "&$limit=10000";
+
+// Assemble API query URL
+// var url = baseURL + date + complaint + limit;
+
+// Create function to grab data from the geojson with d3
+d3.json(url).then(function(response){
+    console.log(response)
+});
