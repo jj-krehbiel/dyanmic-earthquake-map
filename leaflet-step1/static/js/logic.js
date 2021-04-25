@@ -48,7 +48,8 @@ d3.json(url).then(function (response) {
             color: "green",
             fillColor: "green",
             fillOpacity: 0.5,
-            radius: 200
+            opacity: 0,
+            radius: 15000 * (data[i].properties.mag)
         }).bindPopup("A " + data[i].properties.mag + " magnitude earthquake occured " + data[i].properties.place);
         marker.addTo(myMap);
     }
