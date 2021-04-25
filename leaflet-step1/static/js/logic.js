@@ -96,7 +96,7 @@ legend.onAdd = function () {
         "#000000"
     ];
     // var labels = [];
-
+    div.innerHTML = "<h3>Depth of Earthquake Source (km)</h3>"
     // loop through our grades and generate a label with a colored square for each interval
     // grades.forEach(function(grade, index){
     //     labels.push("<div class = 'row'><li style=\"background-color: " + colors[index] +  "; width: 10px"+ "; height: 10px" + "\"></li>" + "<li>" + grade + "</li></div>");
