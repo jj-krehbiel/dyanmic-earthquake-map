@@ -18,9 +18,9 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 
 // Store API query variables
 var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
-// var date = "$where=created_date between'2016-01-01T00:00:00' and '2017-01-01T00:00:00'";
-// var complaint = "&complaint_type=Rodent";
-// var limit = "&$limit=10000";
+
+// Create a variable to use for the color/choropleth scale
+var geojson;
 
 // Assemble API query URL
 // var url = baseURL + date + complaint + limit;
@@ -28,33 +28,41 @@ var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.ge
 // Create function to grab data from the geojson with d3
 d3.json(url).then(function (response) {
     var data = response.features
-    console.log(data)
+    // console.log(data)
+    // console.log(Math.max(data.geometry.coordinates[2]));
+    var depth = 0
+
     // Create a new marker cluster group
     // var markers = L.markerClusterGroup();
     // // Loop through data
     for (var i = 0; i < data.length; i++) {
 
-    //     // Set the data location property to a variable
+        //     // Set the data location property to a variable
         var geometry = data[i].geometry;
-        console.log(geometry)
+        // console.log(geometry)
 
-    //     // Check for location property
+        //     // Check for location property
         if (geometry) {
 
-    //         // Add a new marker to the cluster group and bind a pop-up
-        //     markers.addLayer(L.marker([geometry.coordinates[1], geometry.coordinates[0]])
-        //         .bindPopup("A " + data[i].properties.mag + " magnitude earthquake occured " + data[i].properties.place));
-        var marker = L.circle([geometry.coordinates[1], geometry.coordinates[0]], {
-            color: "green",
-            fillColor: "green",
-            fillOpacity: 0.5,
-            opacity: 0,
-            radius: 15000 * (data[i].properties.mag)
-        }).bindPopup("A " + data[i].properties.mag + " magnitude earthquake occured " + data[i].properties.place);
-        marker.addTo(myMap);
-    }
+            //         // Add a new marker to the cluster group and bind a pop-up
+            //     markers.addLayer(L.marker([geometry.coordinates[1], geometry.coordinates[0]])
+            //         .bindPopup("A " + data[i].properties.mag + " magnitude earthquake occured " + data[i].properties.place));
+            var marker = L.circle([geometry.coordinates[1], geometry.coordinates[0]], {
+                color: "green",
+                fillColor: "green",
+                fillOpacity: 0.5,
+                opacity: 0,
+                radius: 15000 * (data[i].properties.mag)
+            }).bindPopup("A " + data[i].properties.mag + " magnitude earthquake occured " + data[i].properties.place);
+            marker.addTo(myMap);
+
+            if (geometry.coordinates[2] > depth) {
+                depth = geometry.coordinates[2]
+            };
+        }
 
     }
-      // Add our marker cluster layer to the map
-//   myMap.addLayer(markers);
+    console.log(depth)
+    // Add our marker cluster layer to the map
+    //   myMap.addLayer(markers);
 });
