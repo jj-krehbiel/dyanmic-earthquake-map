@@ -30,8 +30,7 @@ d3.json(url).then(function (response) {
     var data = response.features
     // console.log(data)
     // console.log(Math.max(data.geometry.coordinates[2]));
-    var depth = 0
-
+    
     // Create a new marker cluster group
     // var markers = L.markerClusterGroup();
     // // Loop through data
@@ -40,6 +39,29 @@ d3.json(url).then(function (response) {
         //     // Set the data location property to a variable
         var geometry = data[i].geometry;
         // console.log(geometry)
+        
+        // Create function to divvy up color groups by depth
+        function getColor(d) {
+            if (d > -10 && d < 10) {
+                return "#66ff33"
+            }
+            else if (d> 10 && d < 30) {
+                return "#ffff00"
+            }
+            else if (d> 30 && d<50) {
+                return "#ff9900"
+            }
+            else if (d> 50 && d<70) {
+                return "#fc8d59"
+            }
+            else if (d> 70 && d<90) {
+                return "#800000"
+            }
+            else {
+                return "#000000"
+            }
+
+        };
 
         //     // Check for location property
         if (geometry) {
@@ -48,21 +70,19 @@ d3.json(url).then(function (response) {
             //     markers.addLayer(L.marker([geometry.coordinates[1], geometry.coordinates[0]])
             //         .bindPopup("A " + data[i].properties.mag + " magnitude earthquake occured " + data[i].properties.place));
             var marker = L.circle([geometry.coordinates[1], geometry.coordinates[0]], {
-                color: "green",
-                fillColor: "green",
+                color: 'd7301f',
+                fillColor: getColor(geometry.coordinates[2]),
                 fillOpacity: 0.5,
                 opacity: 0,
                 radius: 15000 * (data[i].properties.mag)
             }).bindPopup("A " + data[i].properties.mag + " magnitude earthquake occured " + data[i].properties.place);
             marker.addTo(myMap);
 
-            if (geometry.coordinates[2] > depth) {
-                depth = geometry.coordinates[2]
-            };
+           
         }
 
     }
-    console.log(depth)
+    // console.log(depth)
     // Add our marker cluster layer to the map
     //   myMap.addLayer(markers);
 });
